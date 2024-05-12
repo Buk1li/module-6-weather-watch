@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="current-date-card">
+            <h1>Weather Dashboard</h1>
+            <h2 id="current-date"></h2>
+        </div>
+        <form onsubmit="getWeather(); return false;">
+            <input type="text" id="cityInput" placeholder="Enter City Name">
+            <button type="submit">Search</button>
+        </form>
+        <h2>Current Weather:</h2>
+        <div id="current-weather-container" class="weather-container"></div>
+        <h2> 5-Day Forecast: </h2>
+        <div id="forecast-container" class="forecast-container"></div>
+    </div>
+    <script src="./assets/script.js"></script>
+</body>
+
+</html>
