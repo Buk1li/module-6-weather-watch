@@ -18,7 +18,7 @@ function getWeather() {
             const curTemperature = data.main.temp;
             const curWindSpeed = data.wind.speed;
             const curHumidity = data.main.humidity;
-            const curWeatherIcon = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+            const curWeatherIcon = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
 
             // Populate current weather card with data
             currentWeatherContainer.innerHTML += `
@@ -30,6 +30,9 @@ function getWeather() {
                     <p>Humidity: ${curHumidity}%</p>
                 </div>
             `;
+
+            // Save search to local storage
+            saveToLocalStorage(cityName);
         })
         .catch(error => console.log('Error fetching current weather data:', error));
 
@@ -71,3 +74,31 @@ function getWeather() {
         })
         .catch(error => console.log('Error fetching weather forecast data:', error));
 }
+
+// Function to save search history to local storage
+function saveToLocalStorage(cityName) {
+    let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    searchHistory.unshift(cityName);
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory.slice(0, 5))); // Limit search history to 5 entries
+    renderSearchHistory();
+}
+
+// Function to render search history in the UI
+function renderSearchHistory() {
+    const searchHistoryContainer = document.getElementById('search-history');
+    const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    searchHistoryContainer.innerHTML = '';
+    searchHistory.forEach(city => {
+        const historyItem = document.createElement('div');
+        historyItem.textContent = city;
+        historyItem.classList.add('search-history-item');
+        historyItem.addEventListener('click', () => {
+            document.getElementById('cityInput').value = city;
+            getWeather();
+        });
+        searchHistoryContainer.appendChild(historyItem);
+    });
+}
+
+// Call renderSearchHistory() when the page loads to display existing search history
+window.addEventListener('load', renderSearchHistory);
